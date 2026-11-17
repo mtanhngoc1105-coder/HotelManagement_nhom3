@@ -38,20 +38,26 @@ class JSONStorage:
         return os.path.join(self.__data_directory, f"{name}.json")
 
     # --------------------------------------------------------------------------
-    # HÀM PHỤ (private): đọc 1 file JSON, trả về list các dict
-    # Nếu file chưa có hoặc bị lỗi định dạng thì trả về list rỗng
-    # để chương trình vẫn chạy được lần đầu tiên (chưa có dữ liệu)
+    # HÀM PHỤ (private): đọc 1 file JSON, trả về list các dict.
+    # File chưa tồn tại được xem là danh sách rỗng; dữ liệu lỗi được báo rõ.
     # --------------------------------------------------------------------------
     def __read_file(self, name: str) -> list:
         path = self.__path(name)
         if not os.path.exists(path):        # File chưa tồn tại
             return []
         try:
-            # encoding="utf-8" để đọc đúng tiếng Việt có dấu
             with open(path, "r", encoding="utf-8") as f:
-                return json.load(f)         # Chuyển nội dung JSON thành list/dict
-        except (json.JSONDecodeError, OSError):
-            return []                       # File hỏng hoặc không đọc được
+                items = json.load(f)
+        except json.JSONDecodeError as error:
+            raise ValueError(f"Tệp JSON không hợp lệ: {path}") from error
+        except OSError as error:
+            raise OSError(f"Không thể đọc tệp dữ liệu: {path}") from error
+
+        if not isinstance(items, list) or any(
+            not isinstance(item, dict) for item in items
+        ):
+            raise ValueError(f"Dữ liệu trong {path} phải là danh sách các object.")
+        return items
 
     # --------------------------------------------------------------------------
     # HÀM PHỤ (private): ghi 1 list dict ra file JSON. True = thành công
@@ -79,6 +85,8 @@ class JSONStorage:
         result = {}
         for key, value in vars(obj).items():
             clean_key = re.sub(r"^_[A-Za-z0-9]+__", "", key)   # "_Room__price" -> "price"
+            if clean_key.startswith("_") and not clean_key.startswith("__"):
+                clean_key = clean_key[1:]
             # date và datetime không ghi được thẳng vào JSON => đổi thành chuỗi ISO
             # (datetime là lớp con của date nên isinstance(value, date) bao cả hai)
             if isinstance(value, date):
