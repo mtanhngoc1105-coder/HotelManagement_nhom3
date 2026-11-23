@@ -1,24 +1,8 @@
-"""
-Name: ANH
-Date: 8/11/26
-main.py - Giao dien Console quan ly khach san
-Thanh vien 6: menu, nhan lua chon, kiem tra dau vao va dieu huong.
+"""Giao diện Console cho chương trình quản lý khách sạn."""
 
-Trang thai hien tai:
-- Cac module nghiep vu co the chua duoc lap trinh.
-- Chuong trinh van hien thi va cho phep thu menu.
-- Khi HotelManager va cac phuong thuc duoc bo sung, menu se goi cac chuc nang tuong ung.
+import sys
 
-Luu y: Cac ten phuong thuc ben duoi la ten de xuat. Can thong nhat voi
-thanh vien 5 truoc khi tich hop chinh thuc.
-"""
-
-# Import theo cach an toan: neu module/lop chua co, menu van chay duoc.
-try:
-    from utils.validators import get_int_input, get_yes_no_input
-    from managers.hotel_manager import HotelManager
-except (ImportError, AttributeError):
-    HotelManager = None
+from managers.hotel_manager import HotelManager
 
 
 ROOM_ACTIONS = {
@@ -52,6 +36,19 @@ REPORT_ACTIONS = {
     3: ("Thong ke dat phong theo ngay", "show_daily_bookings"),
 }
 
+MUTATING_ACTIONS = {
+    "add_room",
+    "update_room",
+    "delete_room",
+    "add_guest",
+    "update_guest",
+    "delete_guest",
+    "create_booking",
+    "cancel_booking",
+    "check_in",
+    "check_out",
+}
+
 
 def get_int_input(prompt, min_value=None, max_value=None):
     """Nhap so nguyen va kiem tra gioi han."""
@@ -78,24 +75,12 @@ def pause():
 
 
 def call_action(hotel_manager, method_name):
-    """Goi chuc nang neu HotelManager va phuong thuc da duoc cai dat."""
-    if hotel_manager is None:
-        print("\nChuc nang nghiep vu chua san sang.")
-        print("Hay doi thanh vien 5 hoan thanh hotel_manager.py.")
-        return
-
-    method = getattr(hotel_manager, method_name, None)
-    if not callable(method):
-        print(f"\nHotelManager chua co phuong thuc {method_name}().")
-        print("Can thong nhat ten phuong thuc voi thanh vien 5.")
-        return
-
-    try:
-        result = method()
-        if result is not None:
-            print(result)
-    except Exception as error:
-        print(f"Co loi khi thuc hien chuc nang: {error}")
+    """Gọi nghiệp vụ và lưu dữ liệu sau thao tác làm thay đổi hệ thống."""
+    result = getattr(hotel_manager, method_name)()
+    if result is not None and not isinstance(result, bool):
+        print(result)
+    if method_name in MUTATING_ACTIONS:
+        hotel_manager.save_system_data()
 
 
 def show_submenu(title, actions):
@@ -126,13 +111,9 @@ def run_submenu(title, actions, hotel_manager):
 
 def main():
     """Vong lap dieu khien menu chinh."""
-    hotel_manager = None
-
-    if HotelManager is not None:
-        try:
-            hotel_manager = HotelManager()
-        except Exception as error:
-            print("Chua khoi tao duoc HotelManager:", error)
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(errors="replace")
+    hotel_manager = HotelManager()
 
     while True:
         print("\n" + "=" * 45)
@@ -164,6 +145,7 @@ def main():
         elif choice == 0:
             confirm = input("Ban co chac chan muon thoat? (y/n): ").strip().lower()
             if confirm in ("y", "yes", "c", "co"):
+                hotel_manager.save_system_data()
                 print("Cam on ban da su dung chuong trinh. Tam biet!")
                 break
 
