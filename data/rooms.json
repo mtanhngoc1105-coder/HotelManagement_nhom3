@@ -1,0 +1,48 @@
+[
+    {
+        "room_id": "ROOM-101",
+        "room_number": "101",
+        "price": 120.0,
+        "status": "AVAILABLE",
+        "description": "Phòng tiêu chuẩn, gần thang máy",
+        "capacity": 2,
+        "has_window": true,
+        "bed_type": "Queen",
+        "room_type": "StandardRoom"
+    },
+    {
+        "room_id": "ROOM-102",
+        "room_number": "102",
+        "price": 180.0,
+        "status": "AVAILABLE",
+        "description": "Phòng Deluxe có ban công",
+        "capacity": 3,
+        "amenities": [
+            "Wi-Fi",
+            "Breakfast",
+            "City view"
+        ],
+        "has_balcony": true,
+        "room_type": "DeluxeRoom"
+    },
+    {
+        "room_id": "ROOM-201",
+        "room_number": "201",
+        "price": 90.0,
+        "status": "AVAILABLE",
+        "description": "Phòng cơ bản yên tĩnh",
+        "capacity": 2,
+        "room_type": "Room"
+    },
+    {
+        "room_id": "909",
+        "room_number": "909",
+        "price": 999999.0,
+        "status": "AVAILABLE",
+        "description": "trống",
+        "capacity": 10,
+        "has_window": true,
+        "bed_type": "gỗ",
+        "room_type": "StandardRoom"
+    }
+]

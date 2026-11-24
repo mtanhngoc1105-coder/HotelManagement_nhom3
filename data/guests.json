@@ -1,0 +1,26 @@
+[
+    {
+        "guest_id": "G-DEMO-001",
+        "full_name": "Nguyễn An Minh",
+        "phone": "0000000001",
+        "email": "an.minh@example.com",
+        "address": "Địa chỉ mẫu, Hà Nội",
+        "identity_number": "DEMO-ID-0001"
+    },
+    {
+        "guest_id": "G-DEMO-002",
+        "full_name": "Trần Bình An",
+        "phone": "0000000002",
+        "email": "binh.an@example.com",
+        "address": "Địa chỉ mẫu, Đà Nẵng",
+        "identity_number": "DEMO-ID-0002"
+    },
+    {
+        "guest_id": "KH001",
+        "full_name": "Nguyễn Văn An",
+        "phone": "0987654321",
+        "email": "an@gmail.com",
+        "address": "Hà Nội",
+        "identity_number": "999999999"
+    }
+]

@@ -1,0 +1,22 @@
+[
+    {
+        "booking_id": "B-DEMO-001",
+        "guest_id": "G-DEMO-001",
+        "room_id": "ROOM-102",
+        "check_in": "2026-12-07",
+        "check_out": "2026-12-10",
+        "booking_date": "2026-11-23T17:25:55.095412",
+        "status": "PENDING",
+        "total_price": 810.0
+    },
+    {
+        "booking_id": "B-DEMO-002",
+        "guest_id": "G-DEMO-002",
+        "room_id": "ROOM-101",
+        "check_in": "2026-12-08",
+        "check_out": "2026-12-10",
+        "booking_date": "2026-11-23T17:25:55.095418",
+        "status": "PENDING",
+        "total_price": 240.0
+    }
+]
